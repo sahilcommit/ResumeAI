@@ -6,9 +6,9 @@ const ResumeSchema = new mongoose.Schema(
     title: { type: String, default: "Untitled Resume" },
     isDemo: { type: Boolean, default: false },
     public: { type: Boolean, default: false },
-    template: { type: String, default: "classic" },
-    accent_color: { type: String, default: "#3b82f6" },
-    font_family: { type: String, default: "Arial, sans-serif" },
+    template: { type: String, default: "minimalATSTemplate" },
+    accent_color: { type: String, default: "#6b7280" },
+    font_family: { type: String, default: '"Times New Roman", Times, serif' },
     professional_summary: { type: String, default: "" },
     skills: [
       {

@@ -44,9 +44,9 @@ const ResumeBuilder = () => {
     skills: [],
     certification: [],
     achievements: [],
-    template: "classic",
-    accent_color: "#0f172a",
-    font_family: "Arial, sans-serif",
+    template: "minimalATSTemplate",
+    accent_color: "#6b7280",
+    font_family: '"Times New Roman", Times, serif',
     public: false,
   });
   const [activeSectionIndex, setActiveSectionIndex] = useState(0);
