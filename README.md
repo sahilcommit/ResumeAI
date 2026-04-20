@@ -58,6 +58,12 @@ The project also includes AI-assisted content enhancement and a demo resume for 
 - Shareable public resume links work without requiring authentication
 - Gemini is used for content enhancement and structured extraction
 
+## Challenges I Solved
+
+- Fixed cross-origin issues between Render and Vercel, including the tricky case where Vercel preview/deployment URLs can change while the backend still needs a safe allowlist.
+- Stabilized PDF import by handling different `react-pdftotext` export shapes, so resume text extraction would not break depending on bundler/package behavior.
+- Cleaned up resume template rendering so ATS-focused output avoids raw links, keeps section formatting consistent, and stays readable in both UI and print/PDF output.
+
 ## Tech Stack
 
 ### Frontend
@@ -94,6 +100,12 @@ ResumeAI/
 │   └── utils/
 └── README.md
 ```
+
+## Architecture Notes
+
+- The backend uses one main resume update endpoint instead of many tiny endpoints. That keeps all resume writes in one place, so the builder can save text, visibility changes, style choices, and image changes through a single flow.
+- Resume saves use `FormData` because some updates include both structured JSON and an uploaded profile image. The JSON part is sent as a string and parsed again on the backend, while the image is uploaded separately and merged into the saved resume document.
+- AI is integrated on the backend instead of the frontend. This keeps the Gemini API key private and lets prompts, fallback models, and quota handling stay centralized in one controlled layer.
 
 ## Repository Notes
 
@@ -193,6 +205,7 @@ npm run lint
 ```bash
 npm run server
 npm run start
+npm run test
 ```
 
 ## Main User Flow
@@ -213,24 +226,26 @@ npm run start
 - Auth-protected routes use JWT
 - Uploaded profile images are handled through ImageKit
 - Demo resumes are created once per user and protected against duplication
+- Backend coverage now includes a small test layer for auth protection, public resume access, and validation-critical controller behavior
 
 ## Notes
 
 - Resume upload works best with text-based PDFs. Scanned image PDFs may not extract well.
 - Some templates support profile images while ATS-focused templates stay cleaner and more text-first.
 - Gemini is used for content enhancement and structured resume extraction.
-- There are no automated tests yet, so current verification is based on linting, builds, and manual flow testing
+- AI-powered features may occasionally be unavailable if the active Gemini project hits quota or model access limits.
+- Verification is based on linting, builds, backend route tests, and manual product flow testing
 
 ## Future Improvements
 
 - Add downloadable PDF export generated on the server
 - Add dedicated privacy/terms pages
-- Add unit and integration tests
+- Expand backend and frontend test coverage beyond the current route checks
 - Add resume analytics or job-match scoring
 
-**Sahil Hande**
-* **LinkedIn:** [sahil-hande-620931281](https://linkedin.com/in/sahil-hande-620931281)
----
+## Author
+
+Developed by Sahil Hande
 
 ## 📄 License
 
